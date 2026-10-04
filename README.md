@@ -25,7 +25,16 @@ and Base64-encoded `audioBase64`.
 
 ## Frontend
 
-Open `Frontend/index.html` in a browser while the backend is running. Search
-selects matching destinations already present in the gallery. The guide names
-complete itinerary planning as a desired capability, but does not specify its
-interface or API implementation steps.
+For local development, open `Frontend/index.html` in a browser while the backend
+is running. On Render, Flask serves the frontend and API from the same service,
+so open the service URL. Search selects matching destinations already present
+in the gallery. The guide names complete itinerary planning as a desired
+capability, but does not specify its interface or API implementation steps.
+
+## Deploy on Render
+
+Create a Render Web Service connected to this GitHub repository. Set the root
+directory to `Backend`, the build command to `pip install -r requirements.txt`,
+and the start command to `gunicorn app:app`. Add `GEMINI_API_KEY` and
+`MURF_API_KEY` as environment variables in the Render service settings. The
+service serves both the frontend and the `/generate-audio-guide` API.

@@ -4,14 +4,16 @@ import tempfile
 
 import requests
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from google import genai
 
 
 load_dotenv()
 
-app = Flask(__name__)
+PROJECT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+FRONTEND_DIR = os.path.join(PROJECT_DIR, "Frontend")
+app = Flask(__name__, static_folder=FRONTEND_DIR, static_url_path="")
 CORS(app)
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
@@ -48,6 +50,11 @@ and examples to create a rich experience. Limit the response to around 400 words
 Respond ONLY in {language}.
 """,
 }
+
+
+@app.route("/")
+def home():
+    return send_from_directory(FRONTEND_DIR, "index.html")
 
 
 def generate_description(place, answer_type, language):
